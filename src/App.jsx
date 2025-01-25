@@ -5,11 +5,11 @@ import  PianoKeys  from "./components/PianoKeys.jsx";
 function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold mb-6">¡Aprende Piano! 🎹</h1>
-        <PianoKeys />
-      </div>
-    </div>
+  <div className="text-center">
+    <h1 className="text-3xl font-bold mb-6">¡Aprende Piano! 🎹</h1>
+    <PianoKeys />
+  </div>
+</div>
   );
 }
 
