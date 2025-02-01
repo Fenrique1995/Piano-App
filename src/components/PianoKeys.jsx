@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import * as Tone from "tone";
 
 const PianoKeys = () => {
-  // Notes
   const keys = [
     { note: "C4", label: "Do", key: "a" },
     { note: "D4", label: "Re", key: "s" },
@@ -13,65 +12,65 @@ const PianoKeys = () => {
     { note: "B4", label: "Si", key: "j" },
   ];
 
-  const [activeKey, setActiveKey] = useState(null); // Resalts the note
-  const synthRef = useRef(new Tone.Synth().toDestination()); // Sinthetyzer
+  const [activeKey, setActiveKey] = useState(null);
+  const synthRef = useRef(new Tone.Synth().toDestination());
 
-  // Plays the Note
   const startNote = (note) => {
-    synthRef.current.triggerAttack(note); 
+    synthRef.current.triggerAttack(note);
     console.log(`Nota iniciada: ${note}`);
   };
 
-  // Stops the Note
   const stopNote = () => {
-    synthRef.current.triggerRelease(); 
+    synthRef.current.triggerRelease();
     console.log(`Nota detenida`);
   };
 
-  // Listener for the Keys
   useEffect(() => {
     const handleKeyDown = (event) => {
-      const keyObj = keys.find((k) => k.key === event.key); // Searchs the key
+      const keyObj = keys.find((k) => k.key === event.key);
       if (keyObj && activeKey !== keyObj.key) {
-        startNote(keyObj.note); 
-        setActiveKey(keyObj.key); 
+        startNote(keyObj.note);
+        setActiveKey(keyObj.key);
       }
     };
 
     const handleKeyUp = (event) => {
-      const keyObj = keys.find((k) => k.key === event.key); 
-      if (keyObj && activeKey === keyObj.key) { 
-        stopNote(); 
-        setActiveKey(null); 
+      const keyObj = keys.find((k) => k.key === event.key);
+      if (keyObj && activeKey === keyObj.key) {
+        stopNote();
+        setActiveKey(null);
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown); // Listens which key was pressed
-    window.addEventListener("keyup", handleKeyUp); // Listens which key was released
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [activeKey]); 
+  }, [activeKey]);
 
   return (
-    <div className="flex gap-2 justify-center p-4">
-      {keys.map((key) => (
-        <button
-          key={key.note}
-          className={`rounded-lg p-4 shadow-lg ${
-            activeKey === key.key
-              ? "bg-blue-500 text-white" // Style for the active key
-              : "bg-gray-200 hover:bg-gray-300 active:bg-gray-400"
-          }`}
-          onMouseDown={() => startNote(key.note)} // Play note on click
-          onMouseUp={() => stopNote()} // Stops the Note
-          onMouseLeave={() => stopNote()} // Stops the Note
-        >
-          {key.label} <br /> ({key.key.toUpperCase()})
-        </button>
-      ))}
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-3xl font-bold mb-6 text-center hidden sm:block">¡Aprende Piano! 🎹</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-8 gap-1 sm:flex sm:flex-row justify-center w-full max-w-screen-md">
+        {keys.map((key) => (
+          <button
+            key={key.note}
+            className={`rounded-lg p-4 shadow-lg m-1 w-full sm:w-auto ${
+              activeKey === key.key
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 hover:bg-gray-300 active:bg-gray-400"
+            }`}
+            onMouseDown={() => startNote(key.note)}
+            onMouseUp={() => stopNote()}
+            onMouseLeave={() => stopNote()}
+          >
+            {key.label} <br className="hidden sm:block" /> ({key.key.toUpperCase()})
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
